@@ -33,7 +33,7 @@ typealias OnValueConfirmedListener =
     (item: PTableItem, flyingProperty: FlyingProperty, value: String) -> Unit
 
 class FlyingPopup(private val project: Project, private val propertyTable: PTable) {
-  private val minEnumPopupSize = Dimension(50, -1)
+  private val minEnumPopupSize = Dimension(60, -1)
   private val minCommonPopupSize = Dimension(300, -1)
 
   private val enumPropertyList = JBList<String>()
@@ -58,7 +58,6 @@ class FlyingPopup(private val project: Project, private val propertyTable: PTabl
     }
     cellRenderer.horizontalAlignment = SwingConstants.CENTER
     enumPropertyList.cellRenderer = cellRenderer
-    enumPropertyList.border = JBUI.Borders.empty()
 
     val borderLayout = BorderLayout(12, 0)
     commonPanel.layout = borderLayout
@@ -92,14 +91,14 @@ class FlyingPopup(private val project: Project, private val propertyTable: PTabl
     val row = propertyTable.rowAtPoint(event.point)
     val item = propertyTable.getValueAt(row, 0) as PTableItem
 
-    if (flyingProperty.type is BitwisePropertyType) {
-      showBitwisePropertyUI(event, flyingProperty, item, onValueConfirmedListener)
-    } else if (flyingProperty.type is EnumPropertyType<*>) {
-      showEnumPropertyUI(event, flyingProperty, item, onValueConfirmedListener)
-    } else if (flyingProperty.type === PropertyType.Color) {
-      showColorPropertyUI(flyingProperty, item, onValueConfirmedListener)
-    } else {
-      showCommonPropertyUI(event, flyingProperty, item, onValueConfirmedListener)
+    when {
+      flyingProperty.type is BitwisePropertyType ->
+        showBitwisePropertyUI(event, flyingProperty, item, onValueConfirmedListener)
+      flyingProperty.type is EnumPropertyType<*> ->
+        showEnumPropertyUI(event, flyingProperty, item, onValueConfirmedListener)
+      flyingProperty.type === PropertyType.Color ->
+        showColorPropertyUI(flyingProperty, item, onValueConfirmedListener)
+      else -> showCommonPropertyUI(event, flyingProperty, item, onValueConfirmedListener)
     }
   }
 
@@ -110,7 +109,7 @@ class FlyingPopup(private val project: Project, private val propertyTable: PTabl
       onValueConfirmedListener: OnValueConfirmedListener?) {
     val propertyType = flyingProperty.type as BitwisePropertyType
     val keys = (flyingProperty.type as EnumPropertyType<*>).keys()
-    val currentValue = propertyType.parse(item.value!!)
+//    val currentValue = propertyType.parse(item.value!!)
 
     val borderLayout = BorderLayout(0, 4)
     val bitwisePanel = JPanel(borderLayout)
@@ -150,10 +149,10 @@ class FlyingPopup(private val project: Project, private val propertyTable: PTabl
         for (checkBox in checkBoxes) {
           if (checkBox.isSelected) {
             val value = propertyType.getValue(checkBox.text) ?: continue
-            if (result == 0) {
-              result = value
+            result = if (result == 0) {
+              value
             } else {
-              result = result or value
+              result or value
             }
           }
         }
@@ -184,13 +183,14 @@ class FlyingPopup(private val project: Project, private val propertyTable: PTabl
     popup.showInScreenCoordinates(propertyTable, calculatePopupLocation(event, popup))
     val focusManager = IdeFocusManager.getInstance(project)
     focusManager.requestFocus(commonEditor, true)
-
-    confirmButton.action = object : ConfirmAction() {
+    val confirmAction = object : ConfirmAction() {
       override fun actionPerformed(e: ActionEvent) {
         popup.cancel()
         onValueConfirmedListener?.invoke(item, flyingProperty, commonEditor.text)
       }
     }
+    confirmButton.action = confirmAction
+    commonEditor.action = confirmAction
   }
 
   private fun showColorPropertyUI(

@@ -84,6 +84,10 @@ object SupportProperties {
     ourSupportProperties["mPaddingLeft"] = of("paddingLeft", "setPadding", Integer)
     ourSupportProperties["mPaddingBottom"] = of("paddingBottom", "setPadding", Integer)
     ourSupportProperties["mPaddingRight"] = of("paddingRight", "setPadding", Integer)
+
+    // measurement
+    ourSupportProperties["mMinWidth"] = of("minWidth", "setMinimumWidth", Integer)
+    ourSupportProperties["mMinHeight"] = of("minHeight", "setMinimumHeight", Integer)
   }
 
   operator fun get(propertyName: String): FlyingProperty? {
