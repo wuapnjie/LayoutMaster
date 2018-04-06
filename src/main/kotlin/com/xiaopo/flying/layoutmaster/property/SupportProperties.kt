@@ -19,75 +19,78 @@ object SupportProperties {
 
   init {
     // scrolling
-    ourSupportProperties["mScrollX"] = of("scrollX", "setScrollX", Integer)
-    ourSupportProperties["mScrollY"] = of("scrollY", "setScrollY", Integer)
+    ourSupportProperties["mScrollX"] = of("ScrollX", "setScrollX", Integer)
+    ourSupportProperties["mScrollY"] = of("ScrollY", "setScrollY", Integer)
 
     // drawing
-    ourSupportProperties["getAlpha()"] = of("alpha", "setAlpha", Float)
-    ourSupportProperties["getElevation()"] = of("elevation", "setElevation", Float)
-    ourSupportProperties["getPivotX()"] = of("pivotX", "setPivotX", Float)
-    ourSupportProperties["getPivotY()"] = of("pivotY", "setPivotY", Float)
-    ourSupportProperties["getRotation()"] = of("rotation", "setRotation", Float)
-    ourSupportProperties["getRotationX()"] = of("rotationX", "setRotationX", Float)
-    ourSupportProperties["getRotationY()"] = of("rotationY", "setRotationY", Float)
-    ourSupportProperties["getScaleX()"] = of("scaleX", "setScaleX", Float)
-    ourSupportProperties["getScaleY()"] = of("scaleY", "setScaleY", Float)
-    ourSupportProperties["getTransitionAlpha()"] = of("transitionAlpha", "setTransitionAlpha", Float)
-    ourSupportProperties["getTranslationX()"] = of("translationX", "setTranslationX", Float)
-    ourSupportProperties["getTranslationY()"] = of("translationY", "setTranslationY", Float)
-    ourSupportProperties["getTranslationZ()"] = of("translationZ", "setTranslationZ", Float)
-    ourSupportProperties["getX()"] = of("x", "setX", Float)
-    ourSupportProperties["getY()"] = of("y", "setY", Float)
-    ourSupportProperties["getZ()"] = of("z", "setZ", Float)
+    ourSupportProperties["getAlpha()"] = of("Alpha", "setAlpha", Float)
+    ourSupportProperties["getElevation()"] = of("Elevation", "setElevation", Float)
+    ourSupportProperties["getPivotX()"] = of("PivotX", "setPivotX", Float)
+    ourSupportProperties["getPivotY()"] = of("PivotY", "setPivotY", Float)
+    ourSupportProperties["getRotation()"] = of("Rotation", "setRotation", Float)
+    ourSupportProperties["getRotationX()"] = of("RotationX", "setRotationX", Float)
+    ourSupportProperties["getRotationY()"] = of("RotationY", "setRotationY", Float)
+    ourSupportProperties["getScaleX()"] = of("ScaleX", "setScaleX", Float)
+    ourSupportProperties["getScaleY()"] = of("ScaleY", "setScaleY", Float)
+    ourSupportProperties["getTransitionAlpha()"] = of("TransitionAlpha", "setTransitionAlpha",
+        Float)
+    ourSupportProperties["getTranslationX()"] = of("TranslationX", "setTranslationX", Float)
+    ourSupportProperties["getTranslationY()"] = of("TranslationY", "setTranslationY", Float)
+    ourSupportProperties["getTranslationZ()"] = of("TranslationZ", "setTranslationZ", Float)
+    ourSupportProperties["getX()"] = of("X", "setX", Float)
+    ourSupportProperties["getY()"] = of("Y", "setY", Float)
+    ourSupportProperties["getZ()"] = of("Z", "setZ", Float)
 
     //layout
-    ourSupportProperties["getWidth()"] = of("width", "setWidth", Integer)
-    ourSupportProperties["getHeight()"] = of("height", "setHeight", Integer)
-    ourSupportProperties["mLeft"] = of("left", "setLeft", Integer)
-    ourSupportProperties["mTop"] = of("top", "setTop", Integer)
-    ourSupportProperties["mRight"] = of("right", "setRight", Integer)
-    ourSupportProperties["mBottom"] = of("bottom", "setBottom", Integer)
-    ourSupportProperties["layout_width"] = layout("width", "width", LAYOUT)
-    ourSupportProperties["layout_height"] = layout("height", "height", LAYOUT)
-    ourSupportProperties["layout_leftMargin"] = layout("leftMargin", "leftMargin", LAYOUT)
-    ourSupportProperties["layout_topMargin"] = layout("topMargin", "topMargin", LAYOUT)
-    ourSupportProperties["layout_rightMargin"] = layout("rightMargin", "rightMargin", LAYOUT)
-    ourSupportProperties["layout_bottomMargin"] = layout("bottomMargin", "bottomMargin", LAYOUT)
-    ourSupportProperties["layout_gravity"] = layout("bottomMargin", "bottomMargin", LAYOUT_GRAVITY)
+    ourSupportProperties["getWidth()"] = of("Width", "setWidth", Integer)
+    ourSupportProperties["getHeight()"] = of("Height", "setHeight", Integer)
+    ourSupportProperties["mLeft"] = of("Left", "setLeft", Integer)
+    ourSupportProperties["mTop"] = of("Top", "setTop", Integer)
+    ourSupportProperties["mRight"] = of("Right", "setRight", Integer)
+    ourSupportProperties["mBottom"] = of("Bottom", "setBottom", Integer)
+    ourSupportProperties["layout_width"] = layout("Width", "width", LAYOUT)
+    ourSupportProperties["layout_height"] = layout("Height", "height", LAYOUT)
+    ourSupportProperties["layout_leftMargin"] = layout("LeftMargin", "leftMargin", LAYOUT)
+    ourSupportProperties["layout_topMargin"] = layout("TopMargin", "topMargin", LAYOUT)
+    ourSupportProperties["layout_rightMargin"] = layout("RightMargin", "rightMargin", LAYOUT)
+    ourSupportProperties["layout_bottomMargin"] = layout("BottomMargin", "bottomMargin", LAYOUT)
+    ourSupportProperties["layout_gravity"] = layout("BottomMargin", "bottomMargin", LAYOUT_GRAVITY)
 
     // text
-    ourSupportProperties["mCurTextColor"] = of("textColor", "setTextColor", Color)
-    ourSupportProperties["getScaledTextSize()"] = of("textSize", "setTextSize", Float)
-    ourSupportProperties["getRawTextAlignment()"] = of("textAlignment", "setTextAlignment", TextAlignment)
-    ourSupportProperties["getRawTextDirection()"] = of("textDirection", "setTextDirection", TextDirection)
-    ourSupportProperties["mGravity"] = of("gravity", "setGravity", GRAVITY)
+    ourSupportProperties["mCurTextColor"] = of("TextColor", "setTextColor", Color)
+    ourSupportProperties["getScaledTextSize()"] = of("TextSize", "setTextSize", Float)
+    ourSupportProperties["getRawTextAlignment()"] = of("TextAlignment", "setTextAlignment",
+        TextAlignment)
+    ourSupportProperties["getRawTextDirection()"] = of("TextDirection", "setTextDirection",
+        TextDirection)
+    ourSupportProperties["mGravity"] = of("Gravity", "setGravity", GRAVITY)
 
     // methods
-    ourSupportProperties["getFitsSystemWindows()"] = of("fitsSystemWindows",
+    ourSupportProperties["getFitsSystemWindows()"] = of("FitsSystemWindows",
         "setFitsSystemWindows", Boolean)
-    ourSupportProperties["isActivated()"] = of("activated", "setActivated", Boolean)
-    ourSupportProperties["isClickable()"] = of("clickable", "setClickable", Boolean)
-    ourSupportProperties["isEnabled()"] = of("enabled", "setEnabled", Boolean)
-    ourSupportProperties["isHovered()"] = of("hovered", "setHovered", Boolean)
-    ourSupportProperties["isHapticFeedbackEnabled()"] = of("hapticFeedbackEnabled",
+    ourSupportProperties["isActivated()"] = of("Activated", "setActivated", Boolean)
+    ourSupportProperties["isClickable()"] = of("Clickable", "setClickable", Boolean)
+    ourSupportProperties["isEnabled()"] = of("Enabled", "setEnabled", Boolean)
+    ourSupportProperties["isHovered()"] = of("Hovered", "setHovered", Boolean)
+    ourSupportProperties["isHapticFeedbackEnabled()"] = of("HapticFeedbackEnabled",
         "setHapticFeedbackEnabled", Boolean)
-    ourSupportProperties["isSelected()"] = of("selected", "setSelected", Boolean)
-    ourSupportProperties["getVisibility()"] = of("visibility", "setVisibility", ViewVisibility)
-    ourSupportProperties["isSoundEffectsEnabled()"] = of("soundEffectsEnabled",
+    ourSupportProperties["isSelected()"] = of("Selected", "setSelected", Boolean)
+    ourSupportProperties["getVisibility()"] = of("Visibility", "setVisibility", ViewVisibility)
+    ourSupportProperties["isSoundEffectsEnabled()"] = of("SoundEffectsEnabled",
         "setSoundEffectsEnabled", Boolean)
 
     // properties
-    ourSupportProperties["bg_state_mUseColor"] = of("backgroundColor", "setBackgroundColor", Color)
+    ourSupportProperties["bg_state_mUseColor"] = of("BackgroundColor", "setBackgroundColor", Color)
 
     // padding
-    ourSupportProperties["mPaddingTop"] = of("paddingTop", "setPadding", Integer)
-    ourSupportProperties["mPaddingLeft"] = of("paddingLeft", "setPadding", Integer)
-    ourSupportProperties["mPaddingBottom"] = of("paddingBottom", "setPadding", Integer)
-    ourSupportProperties["mPaddingRight"] = of("paddingRight", "setPadding", Integer)
+    ourSupportProperties["mPaddingTop"] = of("PaddingTop", "setPadding", Integer)
+    ourSupportProperties["mPaddingLeft"] = of("PaddingLeft", "setPadding", Integer)
+    ourSupportProperties["mPaddingBottom"] = of("PaddingBottom", "setPadding", Integer)
+    ourSupportProperties["mPaddingRight"] = of("PaddingRight", "setPadding", Integer)
 
     // measurement
-    ourSupportProperties["mMinWidth"] = of("minWidth", "setMinimumWidth", Integer)
-    ourSupportProperties["mMinHeight"] = of("minHeight", "setMinimumHeight", Integer)
+    ourSupportProperties["mMinWidth"] = of("MinWidth", "setMinimumWidth", Integer)
+    ourSupportProperties["mMinHeight"] = of("MinHeight", "setMinimumHeight", Integer)
   }
 
   operator fun get(propertyName: String): FlyingProperty? {

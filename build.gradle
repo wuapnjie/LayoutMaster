@@ -28,6 +28,7 @@ repositories {
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
     compile group: 'org.jooq', name: 'joor-java-8', version: '0.9.7'
+    compile group: 'com.googlecode.aviator', name: 'aviator', version: '3.3.0'
     compileOnly fileTree(dir: "$StudioCompilePath/plugins/android/lib", include: ['*.jar'])
     compileOnly fileTree(dir: "$StudioCompilePath/lib", include: ['*.jar'])
     testCompile group: 'junit', name: 'junit', version: '4.12'

@@ -2,6 +2,7 @@ package com.xiaopo.flying.layoutmaster.ui
 
 import com.android.tools.adtui.ptable.PTable
 import com.android.tools.adtui.ptable.PTableItem
+import com.googlecode.aviator.AviatorEvaluator
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.popup.JBPopupFactory
 import com.intellij.openapi.util.SystemInfo
@@ -12,6 +13,7 @@ import com.intellij.ui.components.JBList
 import com.intellij.ui.popup.AbstractPopup
 import com.intellij.util.ui.JBUI
 import com.xiaopo.flying.layoutmaster.AndroidColor
+import com.xiaopo.flying.layoutmaster.FlyingAnimator
 import com.xiaopo.flying.layoutmaster.property.BitwisePropertyType
 import com.xiaopo.flying.layoutmaster.property.EnumPropertyType
 import com.xiaopo.flying.layoutmaster.property.FlyingProperty
@@ -24,6 +26,9 @@ import java.awt.event.FocusEvent
 import java.awt.event.MouseEvent
 import java.util.*
 import javax.swing.*
+import kotlin.math.max
+import kotlin.math.min
+
 
 /**
  * @author wupanjie on 2018/4/5.
@@ -34,13 +39,19 @@ typealias OnValueConfirmedListener =
 
 class FlyingPopup(private val project: Project, private val propertyTable: PTable) {
   private val minEnumPopupSize = Dimension(60, -1)
-  private val minCommonPopupSize = Dimension(300, -1)
+  private val minCommonPopupSize = Dimension(360, -1)
 
   private val enumPropertyList = JBList<String>()
-  private val commonPanel = JPanel()
+  private val commonPanel = JPanel(GridLayout(4, 1, 0, 2))
   private val commonEditor: JTextField = createTextField()
   private val confirmButton: JButton = createConfirmButton()
   private val propertyLabel: JLabel = JLabel()
+  private val toTextField: JTextField = JTextField()
+  private val fromTextField: JTextField = JTextField()
+  private val durationTextField: JTextField = JTextField()
+  private val interpolatorTextField: JTextField = JTextField()
+  private val startButton = JButton()
+  private var animator: FlyingAnimator? = null
 
   init {
     initComponent()
@@ -59,12 +70,46 @@ class FlyingPopup(private val project: Project, private val propertyTable: PTabl
     cellRenderer.horizontalAlignment = SwingConstants.CENTER
     enumPropertyList.cellRenderer = cellRenderer
 
-    val borderLayout = BorderLayout(12, 0)
-    commonPanel.layout = borderLayout
+    // first
+    val modifyPanel = JPanel(BorderLayout(4, 0))
+    modifyPanel.add(propertyLabel, BorderLayout.WEST)
+    modifyPanel.add(commonEditor, BorderLayout.CENTER)
+    modifyPanel.add(confirmButton, BorderLayout.EAST)
+
+    // second
+    val fromToPanel = JPanel()
+    val fromToLayout = BoxLayout(fromToPanel, BoxLayout.X_AXIS)
+    fromToPanel.layout = fromToLayout
+
+    val fromLabel = JLabel("From: ")
+    fromToPanel.add(fromLabel)
+    fromToPanel.add(fromTextField)
+
+    val toLabel = JLabel("To: ")
+    fromToPanel.add(Box.createHorizontalStrut(4))
+    fromToPanel.add(toLabel)
+    fromToPanel.add(toTextField)
+
+    val durationLabel = JLabel("Duration: ")
+    fromToPanel.add(Box.createHorizontalStrut(4))
+    fromToPanel.add(durationLabel)
+    fromToPanel.add(durationTextField)
+
+    // third
+    val interpolatorPanel = JPanel(BorderLayout())
+    val interpolatorLabel = JLabel("Interpolator: ")
+    interpolatorPanel.add(interpolatorLabel, BorderLayout.WEST)
+    interpolatorPanel.add(interpolatorTextField, BorderLayout.CENTER)
+
+    // forth
+    val startPanel = JPanel(BorderLayout())
+    startPanel.add(startButton, BorderLayout.CENTER)
+
+    commonPanel.add(modifyPanel)
+    commonPanel.add(fromToPanel)
+    commonPanel.add(interpolatorPanel)
+    commonPanel.add(startPanel)
     commonPanel.border = JBUI.Borders.empty(4)
-    commonPanel.add(propertyLabel, BorderLayout.WEST)
-    commonPanel.add(commonEditor, BorderLayout.CENTER)
-    commonPanel.add(confirmButton, BorderLayout.EAST)
   }
 
   private fun createConfirmButton(): JButton {
@@ -143,7 +188,7 @@ class FlyingPopup(private val project: Project, private val propertyTable: PTabl
     val focusManager = IdeFocusManager.getInstance(project)
     focusManager.requestFocus(selectedPanel, true)
 
-    button.action = object : ConfirmAction() {
+    button.action = object : AbstractAction("Confirm") {
       override fun actionPerformed(e: ActionEvent) {
         var result = 0
         for (checkBox in checkBoxes) {
@@ -183,7 +228,7 @@ class FlyingPopup(private val project: Project, private val propertyTable: PTabl
     popup.showInScreenCoordinates(propertyTable, calculatePopupLocation(event, popup))
     val focusManager = IdeFocusManager.getInstance(project)
     focusManager.requestFocus(commonEditor, true)
-    val confirmAction = object : ConfirmAction() {
+    val confirmAction = object : AbstractAction("Confirm") {
       override fun actionPerformed(e: ActionEvent) {
         popup.cancel()
         onValueConfirmedListener?.invoke(item, flyingProperty, commonEditor.text)
@@ -191,7 +236,49 @@ class FlyingPopup(private val project: Project, private val propertyTable: PTabl
     }
     confirmButton.action = confirmAction
     commonEditor.action = confirmAction
+
+    startButton.action = object : AbstractAction("Start") {
+      override fun actionPerformed(e: ActionEvent?) {
+        val fromValue = fromTextField.text.toDouble()
+        val toValue = toTextField.text.toDouble()
+        val durationMs = durationTextField.text.toInt()
+
+        // stop previous
+        animator?.suspend()
+
+        val interpolatorExpression = interpolatorTextField.text
+
+        animator = object : FlyingAnimator(
+            "FlyingAnimator",
+            durationMs / 16,
+            durationMs,
+            false
+        ) {
+          override fun onValueUpdated(frame: Int, totalFrames: Int, cycle: Int) {
+            val t = frame.toDouble() / totalFrames.toDouble()
+            val interpolator =
+                (AviatorEvaluator.exec(interpolatorExpression, t) as? Double ?: t)
+                    .clamp(0.0, 1.0)
+
+            println("t : $t , interpolator : $interpolator")
+            val currentValue =
+                fromValue + interpolator * (toValue - fromValue)
+            onValueConfirmedListener?.invoke(item, flyingProperty, "$currentValue")
+          }
+
+          override fun onAnimateEnd() {
+            onValueConfirmedListener?.invoke(item, flyingProperty, toTextField.text)
+            animator = null
+          }
+        }
+
+        animator?.resume()
+      }
+    }
+
   }
+
+  fun Double.clamp(lower: Double, upper: Double): Double = min(upper, max(lower, this))
 
   private fun showColorPropertyUI(
       flyingProperty: FlyingProperty,
@@ -275,6 +362,4 @@ class FlyingPopup(private val project: Project, private val propertyTable: PTabl
 
     return point
   }
-
-  private abstract inner class ConfirmAction internal constructor() : AbstractAction("Confirm")
 }
