@@ -1,0 +1,33 @@
+<idea-plugin>
+  <id>com.xiaopo.flying.LayoutMaster</id>
+  <name>Layout Master</name>
+  <vendor email="wupanjie0611@gmail.com">FlyingSnowBean
+  </vendor>
+
+  <!--TODO see website-->
+  <description><![CDATA[
+    With Layout Master, your Layout Inspector more powerful.<br>
+    You can modify your layout and view property on the fly, even with animation<br>
+    Also support your custom view's properties.
+    ]]></description>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+       on how to target different products -->
+  <!-- uncomment to enable plugin in all products
+  <depends>com.intellij.modules.lang</depends>
+  -->
+  <depends>com.intellij.modules.platform</depends>
+  <depends>org.jetbrains.android</depends>
+
+  <extensions defaultExtensionNs="com.intellij">
+    <!-- Add your extensions here -->
+    <!--no extension-->
+  </extensions>
+
+  <actions>
+    <!-- Add your actions here -->
+    <action
+        class="com.xiaopo.flying.layoutmaster.action.HookLayoutInspectorAction"
+        id="Flying.LayoutMaster"/>
+  </actions>
+</idea-plugin>
