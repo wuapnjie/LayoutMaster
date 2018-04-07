@@ -11,13 +11,13 @@ abstract class PropertyType<out T> {
 
   object Integer : PropertyType<Int>() {
     override fun parse(s: String): Int {
-      return s.toInt()
+      return s.toDouble().toInt()
     }
   }
 
   object Float : PropertyType<kotlin.Float>() {
     override fun parse(s: String): kotlin.Float {
-      return s.toFloat()
+      return s.toDouble().toFloat()
     }
   }
 
@@ -29,7 +29,7 @@ abstract class PropertyType<out T> {
 
   object Byte : PropertyType<kotlin.Byte>() {
     override fun parse(s: String): kotlin.Byte {
-      return s.toByte()
+      return s.toDouble().toByte()
     }
   }
 
@@ -41,13 +41,13 @@ abstract class PropertyType<out T> {
 
   object Long : PropertyType<kotlin.Long>() {
     override fun parse(s: String): kotlin.Long {
-      return s.toLong()
+      return s.toDouble().toLong()
     }
   }
 
   object Short : PropertyType<kotlin.Short>() {
     override fun parse(s: String): kotlin.Short {
-      return s.toShort()
+      return s.toDouble().toShort()
     }
   }
 

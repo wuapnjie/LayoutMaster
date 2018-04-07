@@ -25,8 +25,8 @@ object SupportProperties {
     // drawing
     ourSupportProperties["getAlpha()"] = of("Alpha", "setAlpha", Float)
     ourSupportProperties["getElevation()"] = of("Elevation", "setElevation", Float)
-    ourSupportProperties["getPivotX()"] = of("PivotX", "setPivotX", Float)
-    ourSupportProperties["getPivotY()"] = of("PivotY", "setPivotY", Float)
+    ourSupportProperties["getPivotX()"] = of("PivotX", "setPivotX", Float, false)
+    ourSupportProperties["getPivotY()"] = of("PivotY", "setPivotY", Float, false)
     ourSupportProperties["getRotation()"] = of("Rotation", "setRotation", Float)
     ourSupportProperties["getRotationX()"] = of("RotationX", "setRotationX", Float)
     ourSupportProperties["getRotationY()"] = of("RotationY", "setRotationY", Float)
@@ -44,10 +44,10 @@ object SupportProperties {
     //layout
     ourSupportProperties["getWidth()"] = of("Width", "setWidth", Integer)
     ourSupportProperties["getHeight()"] = of("Height", "setHeight", Integer)
-    ourSupportProperties["mLeft"] = of("Left", "setLeft", Integer)
-    ourSupportProperties["mTop"] = of("Top", "setTop", Integer)
-    ourSupportProperties["mRight"] = of("Right", "setRight", Integer)
-    ourSupportProperties["mBottom"] = of("Bottom", "setBottom", Integer)
+    ourSupportProperties["mLeft"] = of("Left", "setLeft", Integer, false)
+    ourSupportProperties["mTop"] = of("Top", "setTop", Integer, false)
+    ourSupportProperties["mRight"] = of("Right", "setRight", Integer, false)
+    ourSupportProperties["mBottom"] = of("Bottom", "setBottom", Integer, false)
     ourSupportProperties["layout_width"] = layout("Width", "width", LAYOUT)
     ourSupportProperties["layout_height"] = layout("Height", "height", LAYOUT)
     ourSupportProperties["layout_leftMargin"] = layout("LeftMargin", "leftMargin", LAYOUT)
@@ -83,14 +83,14 @@ object SupportProperties {
     ourSupportProperties["bg_state_mUseColor"] = of("BackgroundColor", "setBackgroundColor", Color)
 
     // padding
-    ourSupportProperties["mPaddingTop"] = of("PaddingTop", "setPadding", Integer)
-    ourSupportProperties["mPaddingLeft"] = of("PaddingLeft", "setPadding", Integer)
-    ourSupportProperties["mPaddingBottom"] = of("PaddingBottom", "setPadding", Integer)
-    ourSupportProperties["mPaddingRight"] = of("PaddingRight", "setPadding", Integer)
+    ourSupportProperties["mPaddingTop"] = of("PaddingTop", "setPadding", Integer, false)
+    ourSupportProperties["mPaddingLeft"] = of("PaddingLeft", "setPadding", Integer, false)
+    ourSupportProperties["mPaddingBottom"] = of("PaddingBottom", "setPadding", Integer, false)
+    ourSupportProperties["mPaddingRight"] = of("PaddingRight", "setPadding", Integer, false)
 
     // measurement
-    ourSupportProperties["mMinWidth"] = of("MinWidth", "setMinimumWidth", Integer)
-    ourSupportProperties["mMinHeight"] = of("MinHeight", "setMinimumHeight", Integer)
+    ourSupportProperties["mMinWidth"] = of("MinWidth", "setMinimumWidth", Integer, false)
+    ourSupportProperties["mMinHeight"] = of("MinHeight", "setMinimumHeight", Integer, false)
   }
 
   operator fun get(propertyName: String): FlyingProperty? {

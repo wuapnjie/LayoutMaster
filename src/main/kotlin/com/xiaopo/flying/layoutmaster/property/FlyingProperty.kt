@@ -10,15 +10,22 @@ data class FlyingProperty(
     val name: String,
     val method: String,
     val parameter: String,
-    val type: PropertyType<*>) {
+    val type: PropertyType<*>,
+    val supportAnimate: kotlin.Boolean = true) {
 
   companion object {
-    fun of(name: String, method: String, type: PropertyType<*>): FlyingProperty {
-      return FlyingProperty(name, method, "", type)
+    fun of(name: String,
+           method: String,
+           type: PropertyType<*>,
+           supportAnimate: kotlin.Boolean = true): FlyingProperty {
+      return FlyingProperty(name, method, "", type, supportAnimate)
     }
 
-    fun layout(name: String, parameter: String, type: PropertyType<*>): FlyingProperty {
-      return FlyingProperty(name, "", parameter, type)
+    fun layout(name: String,
+               parameter: String,
+               type: PropertyType<*>,
+               supportAnimate: kotlin.Boolean = true): FlyingProperty {
+      return FlyingProperty(name, "", parameter, type, supportAnimate)
     }
 
     fun customOf(name: String, method: String): FlyingProperty {
