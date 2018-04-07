@@ -2,6 +2,7 @@ package com.xiaopo.flying.layoutmaster.ui
 
 import com.android.tools.adtui.ptable.PTable
 import com.android.tools.adtui.ptable.PTableItem
+import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.ComboBox
 import com.intellij.openapi.ui.popup.JBPopupFactory
@@ -18,34 +19,31 @@ import com.xiaopo.flying.layoutmaster.property.BitwisePropertyType
 import com.xiaopo.flying.layoutmaster.property.EnumPropertyType
 import com.xiaopo.flying.layoutmaster.property.FlyingProperty
 import com.xiaopo.flying.layoutmaster.property.PropertyType
+import com.xiaopo.flying.layoutmaster.property.animate.SupportInterpolator
 import org.jdesktop.swingx.combobox.ListComboBoxModel
 import java.awt.*
-import java.awt.event.ActionEvent
-import java.awt.event.FocusAdapter
-import java.awt.event.FocusEvent
-import java.awt.event.MouseEvent
+import java.awt.event.*
 import java.util.*
 import javax.swing.*
 import kotlin.math.max
 import kotlin.math.min
 
-
 /**
  * @author wupanjie on 2018/4/5.
  */
-
 typealias OnValueConfirmedListener =
     (item: PTableItem, flyingProperty: FlyingProperty, value: String) -> Unit
 
 class FlyingPopup(private val project: Project, private val propertyTable: PTable) {
   private val minEnumPopupSize = Dimension(60, -1)
-  private val minCommonPopupSize = Dimension(360, -1)
+  private val minCommonSingleLinePopupSize = Dimension(360, -1)
+  private val minCommonPopupSize = Dimension(360, 143)
 
   private val enumPropertyList = JBList<String>()
 
-  private val commonLayout = GridLayout(4, 1, 0, 2)
   private val commonPanel = JPanel()
-  private val modifyPanel: JPanel = JPanel(BorderLayout(4, 0))
+  private val commonLayout = BoxLayout(commonPanel, BoxLayout.Y_AXIS)
+  private val modifyPanel: JPanel = JPanel(BorderLayout())
   private val fromToPanel: JPanel = JPanel()
   private val interpolatorPanel: JPanel = JPanel(BorderLayout())
   private val startPanel: JPanel = JPanel(BorderLayout())
@@ -58,6 +56,9 @@ class FlyingPopup(private val project: Project, private val propertyTable: PTabl
   private val durationTextField: FlyingJTextField = FlyingJTextField(onlySupportInteger = true)
   private val interpolatorComboBox: ComboBox<String> = ComboBox()
   private val startButton = JButton()
+  private val parametersPanel: FlyingParametersPanel = FlyingParametersPanel()
+
+  private var lastProperty: FlyingProperty? = null
 
   private var animator: FlyingAnimator? = null
 
@@ -146,6 +147,8 @@ class FlyingPopup(private val project: Project, private val propertyTable: PTabl
         showColorPropertyUI(flyingProperty, item, onValueConfirmedListener)
       else -> showCommonPropertyUI(event, flyingProperty, item, onValueConfirmedListener)
     }
+
+    lastProperty = flyingProperty
   }
 
   private fun showBitwisePropertyUI(
@@ -155,7 +158,6 @@ class FlyingPopup(private val project: Project, private val propertyTable: PTabl
       onValueConfirmedListener: OnValueConfirmedListener?) {
     val propertyType = flyingProperty.type as BitwisePropertyType
     val keys = (flyingProperty.type as EnumPropertyType<*>).keys()
-//    val currentValue = propertyType.parse(item.value!!)
 
     val borderLayout = BorderLayout(0, 4)
     val bitwisePanel = JPanel(borderLayout)
@@ -166,10 +168,6 @@ class FlyingPopup(private val project: Project, private val propertyTable: PTabl
     bitwisePanel.add(selectedPanel, BorderLayout.CENTER)
     for (key in keys) {
       val checkBox = JCheckBox(key)
-
-      //if (propertyType.isBitwise(key, currentValue)) {
-      //  checkBox.setSelected(true);
-      //}
       checkBoxes.add(checkBox)
       selectedPanel.add(checkBox)
     }
@@ -216,45 +214,53 @@ class FlyingPopup(private val project: Project, private val propertyTable: PTabl
       flyingProperty: FlyingProperty,
       item: PTableItem,
       onValueConfirmedListener: OnValueConfirmedListener?) {
-    commonPanel.removeAll()
-
-    commonLayout.rows = if (flyingProperty.supportAnimate) 4 else 1
-    commonPanel.layout = commonLayout
-
-    commonPanel.add(modifyPanel)
-    if (flyingProperty.supportAnimate) {
-      commonPanel.add(fromToPanel)
-      commonPanel.add(interpolatorPanel)
-      commonPanel.add(startPanel)
-
-      fromTextField.text = ""
-      toTextField.text = ""
-      durationTextField.text = ""
-      interpolatorComboBox.selectedIndex = 0
-    }
-
-    propertyLabel.text = flyingProperty.name + ": "
-    modifyTextField.text = item.value
-
-    val isOnlySupportInteger =
-        flyingProperty.type == PropertyType.Integer ||
-            flyingProperty.type == PropertyType.Short ||
-            flyingProperty.type == PropertyType.Long
-    modifyTextField.onlySupportInteger = isOnlySupportInteger
-    fromTextField.onlySupportInteger = isOnlySupportInteger
-    toTextField.onlySupportInteger = isOnlySupportInteger
+    configCommonPanel(flyingProperty, item)
 
     val popup = JBPopupFactory.getInstance()
         .createComponentPopupBuilder(commonPanel, null)
         .setCancelOnClickOutside(true)
         .setModalContext(false)
-        .setMinSize(minCommonPopupSize)
+        .setMinSize(if (flyingProperty.supportAnimate) minCommonPopupSize else minCommonSingleLinePopupSize)
         .setRequestFocus(true)
         .createPopup() as AbstractPopup
 
     popup.showInScreenCoordinates(propertyTable, calculatePopupLocation(event, popup))
     val focusManager = IdeFocusManager.getInstance(project)
     focusManager.requestFocus(modifyTextField, true)
+
+    configCommonAction(popup, onValueConfirmedListener, item, flyingProperty)
+
+  }
+
+  private fun configCommonAction(popup: AbstractPopup, onValueConfirmedListener: OnValueConfirmedListener?, item: PTableItem, flyingProperty: FlyingProperty) {
+    interpolatorComboBox.setItemListener { itemEvent ->
+      SupportInterpolator.getInterpolatorInfo(itemEvent.item as String)?.let { info ->
+        val size = Dimension(commonPanel.width - 8, (commonPanel.height - 8) / 5)
+        if (info.parameters.isNotEmpty()) {
+          commonPanel.removeAll()
+          commonPanel.add(modifyPanel)
+          commonPanel.add(fromToPanel)
+          commonPanel.add(interpolatorPanel)
+          parametersPanel.apply {
+            interpolatorInfo = info
+            panel.size = size
+            panel.doLayout()
+            commonPanel.add(panel)
+          }
+          commonPanel.add(startPanel)
+        } else {
+          commonPanel.removeAll()
+          parametersPanel.interpolatorInfo = info
+          commonPanel.add(modifyPanel)
+          commonPanel.add(fromToPanel)
+          commonPanel.add(interpolatorPanel)
+          commonPanel.add(startPanel)
+        }
+
+        popup.component?.doLayout()
+      }
+    }
+
     val confirmAction = object : AbstractAction("Confirm") {
       override fun actionPerformed(e: ActionEvent) {
         popup.cancel()
@@ -274,7 +280,9 @@ class FlyingPopup(private val project: Project, private val propertyTable: PTabl
           // stop previous
           animator?.suspend()
 
-//        val interpolatorExpression = interpolatorTextField.text
+          //        val interpolatorExpression = interpolatorTextField.text
+          val interpolator = SupportInterpolator
+              .getInterpolator(interpolatorComboBox.selectedItem as String, parametersPanel.getParameters())
 
           animator = object : FlyingAnimator(
               "FlyingAnimator",
@@ -284,12 +292,10 @@ class FlyingPopup(private val project: Project, private val propertyTable: PTabl
           ) {
             override fun onValueUpdated(frame: Int, totalFrames: Int, cycle: Int) {
               var t = frame.toFloat() / totalFrames.toFloat()
-
-              val interpolator = SupportInterpolator[interpolatorComboBox.selectedItem as String]
-//                (AviatorEvaluator.exec(interpolatorExpression, t) as? Double ?: t)
-//                    .clamp(0.0, 1.0)
+              //                (AviatorEvaluator.exec(interpolatorExpression, t) as? Double ?: t)
+              //                    .clamp(0.0, 1.0)
               t = (interpolator?.getInterpolation(t) ?: t).clamp(0f, 1f)
-//            println("t : $t , interpolator : $interpolator")
+              //            println("t : $t , interpolator : $interpolator")
               val currentValue: Float =
                   fromValue + t * (toValue - fromValue)
 
@@ -304,11 +310,49 @@ class FlyingPopup(private val project: Project, private val propertyTable: PTabl
 
           animator?.resume()
         } catch (e: Exception) {
-          // do nothing, maybe notify input error
+          Logger.getInstance("Please report to me").error(e)
         }
       }
     }
+  }
 
+  private fun configCommonPanel(flyingProperty: FlyingProperty, item: PTableItem) {
+    commonPanel.removeAll()
+
+    commonPanel.layout = commonLayout
+
+    commonPanel.add(modifyPanel)
+    if (flyingProperty.supportAnimate) {
+      commonPanel.add(fromToPanel)
+      commonPanel.add(interpolatorPanel)
+      SupportInterpolator.getInterpolatorInfo(interpolatorComboBox.selectedItem as String)?.let { info ->
+        parametersPanel.interpolatorInfo = info
+        if (info.parameters.isNotEmpty()) {
+          parametersPanel.apply {
+            commonPanel.add(panel)
+          }
+        }
+      }
+      commonPanel.add(startPanel)
+
+      if (lastProperty != flyingProperty) {
+        fromTextField.text = ""
+        toTextField.text = ""
+        durationTextField.text = ""
+      }
+      interpolatorComboBox.selectedIndex = 0
+    }
+
+    propertyLabel.text = flyingProperty.name + ": "
+    modifyTextField.text = item.value
+
+    val isOnlySupportInteger =
+        flyingProperty.type == PropertyType.Integer ||
+            flyingProperty.type == PropertyType.Short ||
+            flyingProperty.type == PropertyType.Long
+    modifyTextField.onlySupportInteger = isOnlySupportInteger
+    fromTextField.onlySupportInteger = isOnlySupportInteger
+    toTextField.onlySupportInteger = isOnlySupportInteger
   }
 
   fun Float.clamp(lower: Float, upper: Float): Float = min(upper, max(lower, this))
@@ -400,6 +444,16 @@ class FlyingPopup(private val project: Project, private val propertyTable: PTabl
     }
 
     return Color.decode(colorInt.toString() + "")
+  }
+
+  private fun ComboBox<*>.setItemListener(itemListener: (ItemEvent) -> Unit) {
+    // remove previous
+    itemListeners.forEach {
+      removeItemListener(it)
+    }
+    addItemListener {
+      itemListener.invoke(it)
+    }
   }
 }
 

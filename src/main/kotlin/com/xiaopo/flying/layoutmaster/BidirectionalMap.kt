@@ -1,6 +1,6 @@
 package com.xiaopo.flying.layoutmaster
 
-import java.util.LinkedHashMap
+import java.util.*
 
 /**
  * @author wupanjie on 2018/4/5.

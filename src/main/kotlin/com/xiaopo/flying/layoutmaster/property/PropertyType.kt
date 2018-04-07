@@ -63,12 +63,11 @@ abstract class PropertyType<out T> {
    */
   object LAYOUT : PropertyType<Int>() {
     override fun parse(s: String): Int {
-      return if (s.toLowerCase() == "WRAP_CONTENT") {
-        -2
-      } else if (s.toLowerCase() == "MATCH_PARENT") {
-        -1
-      } else
-        s.toInt()
+      return when {
+        s.toLowerCase() == "WRAP_CONTENT" -> -2
+        s.toLowerCase() == "MATCH_PARENT" -> -1
+        else -> s.toDouble().toInt()
+      }
     }
   }
 

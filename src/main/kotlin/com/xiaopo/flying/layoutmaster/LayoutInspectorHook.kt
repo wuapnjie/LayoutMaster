@@ -201,7 +201,7 @@ class LayoutInspectorHook(
     }
 
     when (flyingProperty.name) {
-      "paddingLeft" -> HandleViewDebug
+      "PaddingLeft" -> HandleViewDebug
           .invokeMethod(
               client,
               window.title,
@@ -211,7 +211,7 @@ class LayoutInspectorHook(
               flyingProperty.type.parse(paddingTop),
               flyingProperty.type.parse(paddingRight),
               flyingProperty.type.parse(paddingBottom))
-      "paddingTop" -> HandleViewDebug
+      "PaddingTop" -> HandleViewDebug
           .invokeMethod(
               client,
               window.title,
@@ -221,7 +221,7 @@ class LayoutInspectorHook(
               flyingProperty.type.parse(changedValue),
               flyingProperty.type.parse(paddingRight),
               flyingProperty.type.parse(paddingBottom))
-      "paddingRight" -> HandleViewDebug
+      "PaddingRight" -> HandleViewDebug
           .invokeMethod(
               client,
               window.title,
@@ -231,7 +231,7 @@ class LayoutInspectorHook(
               flyingProperty.type.parse(paddingTop),
               flyingProperty.type.parse(changedValue),
               flyingProperty.type.parse(paddingBottom))
-      "paddingBottom" -> HandleViewDebug
+      "PaddingBottom" -> HandleViewDebug
           .invokeMethod(
               client,
               window.title,

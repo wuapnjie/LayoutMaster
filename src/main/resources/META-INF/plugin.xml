@@ -1,12 +1,11 @@
 <idea-plugin>
   <id>com.xiaopo.flying.LayoutMaster</id>
   <name>Layout Master</name>
-  <vendor email="wupanjie0611@gmail.com">FlyingSnowBean
+  <vendor email="wupanjie0611@gmail.com" url="https://github.com/wuapnjie/LayoutMaster">FlyingSnowBean
   </vendor>
 
-  <!--TODO see website-->
   <description><![CDATA[
-    With Layout Master, your Layout Inspector more powerful.<br>
+    With Layout Master, your Layout Inspector will be more powerful.<br>
     You can modify your layout and view property on the fly, even with animation<br>
     Also support your custom view's properties.
     ]]></description>

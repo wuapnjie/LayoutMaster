@@ -1,7 +1,7 @@
 package com.xiaopo.flying.layoutmaster.property
 
 import com.xiaopo.flying.layoutmaster.BidirectionalMap
-import java.util.ArrayList
+import java.util.*
 
 /**
  * @author wupanjie on 2018/4/4.
