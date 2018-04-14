@@ -11,3 +11,7 @@
 插件效果如下
 
 ![LayoutMaster](https://github.com/wuapnjie/LayoutMaster/blob/master/images/pic2.gif)
+
+[下载页面](https://github.com/wuapnjie/LayoutMaster/releases/tag/v1.0.0)
+
+Idea插件中心审核中
