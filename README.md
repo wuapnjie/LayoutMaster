@@ -1,6 +1,6 @@
 # Layout Master
 
-Related article：[https://www.jianshu.com/p/b06baa73e099](https://www.jianshu.com/p/b06baa73e099)
+Related article [https://www.jianshu.com/p/b06baa73e099](https://www.jianshu.com/p/b06baa73e099)
 
 Plug-in based on Layout Inspector. Strengthened this tool, so name it Layout Master.
 
