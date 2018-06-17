@@ -1,17 +1,17 @@
 # Layout Master
 
-相关文章介绍 ：[https://www.jianshu.com/p/b06baa73e099](https://www.jianshu.com/p/b06baa73e099)
+Related article：[https://www.jianshu.com/p/b06baa73e099](https://www.jianshu.com/p/b06baa73e099)
 
-插件基于Layout Inspector，强化了这个工具，故取名Layout Master。
+Plug-in based on Layout Inspector. Strengthened this tool, so name it Layout Master.
 
-使用方式同Layout Inspector，呼出Android Studio或Idea的Action面板，输入Layout Master点击即可
+Use the same way as Layout Inspector. Call out Android Studio or Idea's Action panel, type Layout Master click
 
 ![](https://github.com/wuapnjie/LayoutMaster/blob/master/images/pic1.png)
 
-插件效果如下
+Plug-in effect is as follows
 
 ![LayoutMaster](https://github.com/wuapnjie/LayoutMaster/blob/master/images/pic2.gif)
 
-[下载页面](https://github.com/wuapnjie/LayoutMaster/releases/tag/v1.0.0)
+Download page: (https://github.com/wuapnjie/LayoutMaster/releases/tag/v1.0.0)
 
-Idea插件中心审核中
+Idea plug-in center audit
