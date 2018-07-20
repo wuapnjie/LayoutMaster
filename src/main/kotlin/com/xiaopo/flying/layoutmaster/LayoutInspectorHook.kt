@@ -18,6 +18,7 @@ import com.xiaopo.flying.layoutmaster.property.PropertyType
 import com.xiaopo.flying.layoutmaster.property.SupportProperties
 import com.xiaopo.flying.layoutmaster.ui.FlyingPopup
 import org.joor.Reflect
+import org.joor.ReflectException
 import java.awt.event.MouseAdapter
 import java.awt.event.MouseEvent
 import java.io.IOException
@@ -29,12 +30,13 @@ class LayoutInspectorHook(
     project: Project,
     layoutInspectorEditor: LayoutInspectorEditor,
     private val client: Client,
-    private val window: ClientWindow
+    window: ClientWindow
 ) {
 
   private var flyingPopup: FlyingPopup
   private var previewDisplay: ViewNodeActiveDisplay
   private var propertyTable: PTable
+  private val windowTitle: String
 
   init {
     val editorReflect = Reflect.on(layoutInspectorEditor)
@@ -43,6 +45,8 @@ class LayoutInspectorHook(
 
     propertyTable = context.propertiesTable
     previewDisplay = Reflect.on(context).get<ViewNodeActiveDisplay>("myPreview")
+
+    windowTitle = Reflect.on(window).get<String>("title")
 
     flyingPopup = FlyingPopup(project, propertyTable)
   }
@@ -125,7 +129,7 @@ class LayoutInspectorHook(
       (flyingProperty.type === PropertyType.LAYOUT) ->
         HandleViewDebug.setLayoutParameter(
             client,
-            window.title,
+            windowTitle,
             selectedNode.toString(),
             flyingProperty.parameter,
             PropertyType.LAYOUT.parse(changedValue))
@@ -139,7 +143,7 @@ class LayoutInspectorHook(
       else ->
         HandleViewDebug.invokeMethod(
             client,
-            window.title,
+            windowTitle,
             selectedNode.toString(),
             flyingProperty.method,
             flyingProperty.type.parse(changedValue))
@@ -154,7 +158,7 @@ class LayoutInspectorHook(
       try {
         HandleViewDebug.invokeMethod(
             client,
-            window.title,
+            windowTitle,
             selectedNode.toString(),
             flyingProperty.method,
             type.parse(changedValue))
@@ -171,8 +175,15 @@ class LayoutInspectorHook(
 
   private fun onChangeApplied(item: PTableItem, selectedNode: ViewNode, changedValue: String) {
     val propertyKey = getPropertyKey(item)
-    selectedNode.namedProperties[propertyKey]?.let { changedProperty ->
-      changedProperty.value = changedValue
+
+    val namedProperties = Reflect.on(selectedNode).get<MutableMap<String, ViewProperty>>("namedProperties")
+    namedProperties[propertyKey]?.let { changedProperty ->
+      try {
+        Reflect.on(changedProperty).set("myValue", changedValue)
+      }catch (e : ReflectException){
+        Reflect.on(changedProperty).set("value", changedValue)
+      }
+
       Reflect.on(item).set("myValue", changedValue)
       propertyTable.repaint()
     }
@@ -183,7 +194,9 @@ class LayoutInspectorHook(
       selectedNode: ViewNode,
       flyingProperty: FlyingProperty,
       changedValue: String) {
-    val paddingProperties = (selectedNode.groupedProperties as Map<String, List<ViewProperty>>).getOrDefault("padding", emptyList())
+
+    val groupedProperties = Reflect.on(selectedNode).get<MutableMap<String, MutableList<ViewProperty>>>("groupedProperties")
+    val paddingProperties = groupedProperties.getOrDefault("padding", arrayListOf())
 
     var paddingTop = ""
     var paddingLeft = ""
@@ -191,8 +204,13 @@ class LayoutInspectorHook(
     var paddingRight = ""
 
     for (paddingProperty in paddingProperties) {
-      val padding = paddingProperty.value
-      when (paddingProperty.name) {
+      val padding = try {
+        Reflect.on(paddingProperty).get<String>("value")
+      }catch (e : ReflectException){
+        Reflect.on(paddingProperty).get<String>("myValue")
+      }
+
+      when (Reflect.on(paddingProperty).get<String>("name")) {
         "mPaddingLeft" -> paddingLeft = padding
         "mPaddingTop" -> paddingTop = padding
         "mPaddingRight" -> paddingRight = padding
@@ -204,7 +222,7 @@ class LayoutInspectorHook(
       "PaddingLeft" -> HandleViewDebug
           .invokeMethod(
               client,
-              window.title,
+              windowTitle,
               selectedNode.toString(),
               flyingProperty.method,
               flyingProperty.type.parse(changedValue),
@@ -214,7 +232,7 @@ class LayoutInspectorHook(
       "PaddingTop" -> HandleViewDebug
           .invokeMethod(
               client,
-              window.title,
+              windowTitle,
               selectedNode.toString(),
               flyingProperty.method,
               flyingProperty.type.parse(paddingLeft),
@@ -224,7 +242,7 @@ class LayoutInspectorHook(
       "PaddingRight" -> HandleViewDebug
           .invokeMethod(
               client,
-              window.title,
+              windowTitle,
               selectedNode.toString(),
               flyingProperty.method,
               flyingProperty.type.parse(paddingLeft),
@@ -234,7 +252,7 @@ class LayoutInspectorHook(
       "PaddingBottom" -> HandleViewDebug
           .invokeMethod(
               client,
-              window.title,
+              windowTitle,
               selectedNode.toString(),
               flyingProperty.method,
               flyingProperty.type.parse(paddingLeft),

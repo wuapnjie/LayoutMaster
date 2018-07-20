@@ -14,7 +14,7 @@ plugins {
 }
 
 group 'com.xiaopo.flying'
-version '1.0.0'
+version '1.0.1'
 
 apply plugin: 'java'
 apply plugin: 'kotlin'
@@ -41,10 +41,15 @@ compileTestKotlin {
   kotlinOptions.jvmTarget = "1.8"
 }
 intellij {
-  version '2017.3'
+//  version '2017.1'
+  intellij.localPath = project.hasProperty("StudioRunPath") ? StudioRunPath : StudioCompilePath
 }
 patchPluginXml {
+  sinceBuild '173'
+  untilBuild '181.*'
   changeNotes """
+     v1.0.1<br>
+     change compatible builds
      v1.0.0<br>
      It is a first version of Layout Master.<br>
      if you like it, please give me a star.<br>
