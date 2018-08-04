@@ -1,5 +1,5 @@
 buildscript {
-  ext.kotlin_version = '1.2.31'
+  ext.kotlin_version = '1.2.51'
 
   repositories {
     mavenCentral()
@@ -14,7 +14,7 @@ plugins {
 }
 
 group 'com.xiaopo.flying'
-version '1.0.1'
+version '1.0.2'
 
 apply plugin: 'java'
 apply plugin: 'kotlin'
@@ -46,11 +46,13 @@ intellij {
 }
 patchPluginXml {
   sinceBuild '173'
-  untilBuild '181.*'
+  untilBuild '183.*'
   changeNotes """
-     v1.0.1<br>
-     change compatible builds
-     v1.0.0<br>
+     <b>v1.0.2</b><br>
+     be compatible with latest idea<br>
+     <b>v1.0.1</b><br>
+     change compatible builds<br>
+     <b>v1.0.0</b><br>
      It is a first version of Layout Master.<br>
      if you like it, please give me a star.<br>
      And welcome to contribute your code for this project.<br>
