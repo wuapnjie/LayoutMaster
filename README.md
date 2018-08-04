@@ -6,8 +6,12 @@
 
 使用方式同Layout Inspector，呼出Android Studio或Idea的Action面板，输入Layout Master点击即可
 
-![](https://ws3.sinaimg.cn/large/006tKfTcgy1fqcali3gjwj30rm08ogmu.jpg)
+![](https://github.com/wuapnjie/LayoutMaster/blob/master/images/pic1.png)
 
 插件效果如下
 
-![LayoutMaster](https://ws3.sinaimg.cn/large/006tKfTcgy1fqck64gixtg30lt0d2x6p.gif)
+![LayoutMaster](https://github.com/wuapnjie/LayoutMaster/blob/master/images/pic2.gif)
+
+[下载页面](https://github.com/wuapnjie/LayoutMaster/releases/tag/v1.0.0)
+
+Idea插件中心审核中
