@@ -355,7 +355,7 @@ class FlyingPopup(private val project: Project, private val propertyTable: PTabl
     toTextField.onlySupportInteger = isOnlySupportInteger
   }
 
-  fun Float.clamp(lower: Float, upper: Float): Float = min(upper, max(lower, this))
+  fun Float.clamp(lower: Float, upper: Float): Float = Math.min(upper, Math.max(lower, this))
 
   private fun showColorPropertyUI(
       flyingProperty: FlyingProperty,
