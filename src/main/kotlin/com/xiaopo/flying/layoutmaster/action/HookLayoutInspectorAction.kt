@@ -1,5 +1,6 @@
 package com.xiaopo.flying.layoutmaster.action
 
+import com.android.tools.idea.editors.layoutInspector.actions.AndroidRunLayoutInspectorAction
 import com.android.tools.idea.fd.actions.RestartActivityAction
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
@@ -7,7 +8,6 @@ import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.ui.DialogWrapper
 import com.xiaopo.flying.layoutmaster.refer.FlyingGetClientWindowsTask
 import org.jetbrains.android.actions.AndroidProcessChooserDialog
-import org.jetbrains.android.actions.AndroidRunLayoutInspectorAction
 import org.jetbrains.android.util.AndroidBundle
 
 /**
