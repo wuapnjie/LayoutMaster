@@ -63,8 +63,7 @@ public class FlyingLayoutInspectorCaptureTask extends Task.Backgroundable {
     }
 
     long captureDurationMs = System.currentTimeMillis() - startTimeMs;
-    UsageTracker.getInstance()
-        .log(AndroidStudioEvent.newBuilder()
+    UsageTracker.log(AndroidStudioEvent.newBuilder()
             .setKind(AndroidStudioEvent.EventKind.LAYOUT_INSPECTOR_EVENT)
             .setDeviceInfo(AndroidStudioUsageTracker.deviceToDeviceInfo(myClient.getDevice()))
             .setLayoutInspectorEvent(LayoutInspectorEvent.newBuilder()

@@ -1,5 +1,6 @@
 package com.xiaopo.flying.layoutmaster.action
 
+import com.android.tools.idea.editors.layoutInspector.actions.AndroidRunLayoutInspectorAction
 import com.android.tools.idea.fd.actions.RestartActivityAction
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
@@ -7,7 +8,6 @@ import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.ui.DialogWrapper
 import com.xiaopo.flying.layoutmaster.refer.FlyingGetClientWindowsTask
 import org.jetbrains.android.actions.AndroidProcessChooserDialog
-import org.jetbrains.android.actions.AndroidRunLayoutInspectorAction
 import org.jetbrains.android.util.AndroidBundle
 
 /**
@@ -15,9 +15,9 @@ import org.jetbrains.android.util.AndroidBundle
  */
 class HookLayoutInspectorAction : AnAction("Layout Master", "Run Layout Inspector with Layout Master", null) {
 
-  override fun update(e: AnActionEvent?) {
+  override fun update(e: AnActionEvent) {
     super.update(e)
-    if (RestartActivityAction.isDebuggerPaused(e!!.project)) {
+    if (RestartActivityAction.isDebuggerPaused(e.project)) {
       e.presentation.description = AndroidBundle.message("android.ddms.actions.layoutinspector.description.disabled")
       e.presentation.isEnabled = false
     } else {

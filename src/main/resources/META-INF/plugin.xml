@@ -10,6 +10,7 @@
     Also support your custom view's properties.
     ]]></description>
 
+  <idea-version since-build="173"/>
   <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
        on how to target different products -->
   <!-- uncomment to enable plugin in all products
@@ -26,7 +27,7 @@
   <actions>
     <!-- Add your actions here -->
     <action
-        class="com.xiaopo.flying.layoutmaster.action.HookLayoutInspectorAction"
-        id="Flying.LayoutMaster"/>
+      class="com.xiaopo.flying.layoutmaster.action.HookLayoutInspectorAction"
+      id="Flying.LayoutMaster"/>
   </actions>
 </idea-plugin>
