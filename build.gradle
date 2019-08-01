@@ -10,11 +10,11 @@ buildscript {
 }
 
 plugins {
-  id 'org.jetbrains.intellij' version '0.3.4'
+  id 'org.jetbrains.intellij' version '0.4.9'
 }
 
 group 'com.xiaopo.flying'
-version '1.0.3'
+version '1.0.4'
 
 apply plugin: 'java'
 apply plugin: 'kotlin'
@@ -27,8 +27,6 @@ repositories {
 
 dependencies {
   compile "org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version"
-  compile group: 'org.jooq', name: 'joor-java-8', version: '0.9.7'
-  //    compile group: 'com.googlecode.aviator', name: 'aviator', version: '3.3.0'
   compileOnly fileTree(dir: "$StudioCompilePath/plugins/android/lib", include: ['*.jar'])
   compileOnly fileTree(dir: "$StudioCompilePath/lib", include: ['*.jar'])
   testCompile group: 'junit', name: 'junit', version: '4.12'
@@ -47,6 +45,8 @@ intellij {
 }
 patchPluginXml {
   changeNotes """
+     <b>v1.0.4</b><br>
+     Fix<br>
      <b>v1.0.3</b><br>
      be compatible with latest idea<br>
      <b>v1.0.2</b><br>
