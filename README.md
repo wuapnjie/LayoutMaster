@@ -14,4 +14,4 @@
 
 [下载页面](https://github.com/wuapnjie/LayoutMaster/releases/tag/v1.0.0)
 
-Idea插件中心已上线，搜索下载即可
+Idea插件中心已上线，搜索下载即可，Idea 2019.2测试可用
