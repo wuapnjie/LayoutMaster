@@ -1,7 +1,7 @@
 package com.xiaopo.flying.layoutmaster.property.animate
 
-import android.animation.TimeInterpolator
 import com.xiaopo.flying.layoutmaster.property.PropertyType
+import com.xiaopo.flying.layoutmaster.refer.interpolator.TimeInterpolator
 import org.joor.Reflect
 
 /**
@@ -22,11 +22,11 @@ data class InterpolatorInfo<T : TimeInterpolator>(
 
   fun <T> createInterpolator(vararg args: Any?): T =
       if (args.isEmpty()) {
-        Reflect.on(type)
+        Reflect.onClass(type)
             .create()
             .get()
       } else {
-        Reflect.on(type)
+        Reflect.onClass(type)
             .create(*args)
             .get()
       }

@@ -5,12 +5,12 @@ import com.android.ddmlib.HandleViewDebug
 import com.android.layoutinspector.model.ClientWindow
 import com.android.layoutinspector.model.ViewNode
 import com.android.layoutinspector.model.ViewProperty
-import com.android.tools.adtui.ptable.PTable
-import com.android.tools.adtui.ptable.PTableItem
 import com.android.tools.idea.editors.layoutInspector.LayoutInspectorContext
 import com.android.tools.idea.editors.layoutInspector.LayoutInspectorEditor
 import com.android.tools.idea.editors.layoutInspector.ptable.LITableItem
 import com.android.tools.idea.editors.layoutInspector.ui.ViewNodeActiveDisplay
+import com.android.tools.property.ptable.PTable
+import com.android.tools.property.ptable.PTableItem
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.text.StringUtil
 import com.xiaopo.flying.layoutmaster.property.FlyingProperty

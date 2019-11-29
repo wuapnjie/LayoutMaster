@@ -1,13 +1,11 @@
-package com.xiaopo.flying.layoutmaster.refer;
-
-import android.view.animation.Interpolator;
+package com.xiaopo.flying.layoutmaster.refer.interpolator;
 
 /**
  * refer see android support library
  *
  * @author wupanjie on 2018/4/7.
  */
-abstract class LookupTableInterpolator implements Interpolator {
+abstract class LookupTableInterpolator implements TimeInterpolator {
 
   private final float[] mValues;
   private final float mStepSize;

@@ -1,7 +1,6 @@
 package com.xiaopo.flying.layoutmaster.action
 
 import com.android.tools.idea.editors.layoutInspector.actions.AndroidRunLayoutInspectorAction
-import com.android.tools.idea.fd.actions.RestartActivityAction
 import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.diagnostic.Logger
@@ -17,7 +16,7 @@ class HookLayoutInspectorAction : AnAction("Layout Master", "Run Layout Inspecto
 
   override fun update(e: AnActionEvent) {
     super.update(e)
-    if (RestartActivityAction.isDebuggerPaused(e.project)) {
+    if (AndroidRunLayoutInspectorAction.isDebuggerPaused(e.project)) {
       e.presentation.description = AndroidBundle.message("android.ddms.actions.layoutinspector.description.disabled")
       e.presentation.isEnabled = false
     } else {

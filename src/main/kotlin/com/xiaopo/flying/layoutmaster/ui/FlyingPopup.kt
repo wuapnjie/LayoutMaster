@@ -1,7 +1,8 @@
 package com.xiaopo.flying.layoutmaster.ui
 
-import com.android.tools.adtui.ptable.PTable
-import com.android.tools.adtui.ptable.PTableItem
+import com.android.tools.property.ptable.PTable
+import com.android.tools.property.ptable.PTableItem
+import com.intellij.ide.plugins.newui.ColorButton
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.ui.ComboBox
@@ -9,6 +10,7 @@ import com.intellij.openapi.ui.popup.JBPopupFactory
 import com.intellij.openapi.util.SystemInfo
 import com.intellij.openapi.wm.IdeFocusManager
 import com.intellij.ui.ColorChooser
+import com.intellij.ui.JBColor
 import com.intellij.ui.awt.RelativePoint
 import com.intellij.ui.components.JBList
 import com.intellij.ui.popup.AbstractPopup
@@ -37,7 +39,7 @@ typealias OnValueConfirmedListener =
 class FlyingPopup(private val project: Project, private val propertyTable: PTable) {
   private val minEnumPopupSize = Dimension(60, -1)
   private val minCommonSingleLinePopupSize = Dimension(360, -1)
-  private val minCommonPopupSize = Dimension(360, 143)
+  private val minCommonPopupSize = Dimension(360, 154)
 
   private val enumPropertyList = JBList<String>()
 
