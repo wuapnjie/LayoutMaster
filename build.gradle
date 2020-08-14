@@ -46,7 +46,7 @@ intellij {
 patchPluginXml {
   changeNotes """
      <b>v1.0.6</b><br>
-     be compatible with Android Studio 4.0 Preview<br>
+     be compatible with Android Studio 4.0<br>
      <b>v1.0.5</b><br>
      Fix<br>
      <b>v1.0.4</b><br>
