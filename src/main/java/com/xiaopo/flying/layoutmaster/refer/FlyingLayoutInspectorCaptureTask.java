@@ -1,7 +1,6 @@
 package com.xiaopo.flying.layoutmaster.refer;
 
 import com.android.ddmlib.Client;
-import com.android.layoutinspector.LayoutInspectorBridge;
 import com.android.layoutinspector.LayoutInspectorCaptureOptions;
 import com.android.layoutinspector.LayoutInspectorResult;
 import com.android.layoutinspector.model.ClientWindow;
@@ -22,11 +21,13 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.xiaopo.flying.layoutmaster.LayoutInspectorBridge2;
 import com.intellij.util.ui.UIUtil;
 import com.xiaopo.flying.layoutmaster.LayoutInspectorHook;
+import org.jetbrains.annotations.NotNull;
+
 import java.io.IOException;
 import java.util.List;
-import org.jetbrains.annotations.NotNull;
 
 /**
  * refer : com.android.tools.idea.editors.layoutInspector.LayoutInspectorCaptureTask
@@ -56,7 +57,7 @@ public class FlyingLayoutInspectorCaptureTask extends Task.Backgroundable {
     indicator.setIndeterminate(false);
 
     long startTimeMs = System.currentTimeMillis();
-    LayoutInspectorResult result = LayoutInspectorBridge.captureView(myWindow, options);
+    LayoutInspectorResult result = LayoutInspectorBridge2.captureView(myWindow, options);
     if (!result.getError().isEmpty()) {
       myError = result.getError();
       return;
