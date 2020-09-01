@@ -3,6 +3,7 @@ package com.xiaopo.flying.layoutmaster.refer;
 import com.android.ddmlib.Client;
 import com.android.layoutinspector.LayoutInspectorCaptureOptions;
 import com.android.layoutinspector.LayoutInspectorResult;
+import com.android.layoutinspector.ProtocolVersion;
 import com.android.layoutinspector.model.ClientWindow;
 import com.android.tools.analytics.UsageTracker;
 import com.android.tools.idea.editors.layoutInspector.LayoutInspectorCaptureType;
@@ -21,6 +22,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.text.StringUtil;
 import com.intellij.openapi.vfs.VirtualFile;
+import com.xiaopo.flying.layoutmaster.GlobalConfig;
 import com.xiaopo.flying.layoutmaster.LayoutInspectorBridge2;
 import com.intellij.util.ui.UIUtil;
 import com.xiaopo.flying.layoutmaster.LayoutInspectorHook;
@@ -51,6 +53,10 @@ public class FlyingLayoutInspectorCaptureTask extends Task.Backgroundable {
   @Override public void run(@NotNull ProgressIndicator indicator) {
     LayoutInspectorCaptureOptions options = new LayoutInspectorCaptureOptions();
     options.setTitle(myWindow.getDisplayName());
+    // 开启V2加快速度，但不支持Custom Properties
+    if (GlobalConfig.INSTANCE.getUseV2()) {
+      options.setVersion(ProtocolVersion.Version2);
+    }
 
     // Capture view hierarchy
     indicator.setText("Capturing View Hierarchy");

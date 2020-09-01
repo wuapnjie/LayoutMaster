@@ -11,11 +11,13 @@ import com.android.tools.idea.editors.layoutInspector.ptable.LITableItem
 import com.android.tools.idea.editors.layoutInspector.ui.ViewNodeActiveDisplay
 import com.android.tools.property.ptable.PTable
 import com.android.tools.property.ptable.PTableItem
+import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.text.StringUtil
 import com.xiaopo.flying.layoutmaster.property.FlyingProperty
 import com.xiaopo.flying.layoutmaster.property.PropertyType
 import com.xiaopo.flying.layoutmaster.property.SupportProperties
+import com.xiaopo.flying.layoutmaster.property.SupportPropertiesV2
 import com.xiaopo.flying.layoutmaster.ui.FlyingPopup
 import org.joor.Reflect
 import org.joor.ReflectException
@@ -38,9 +40,11 @@ class LayoutInspectorHook(
   private var propertyTable: PTable
   private val windowTitle: String
 
+  private val useV2 = GlobalConfig.useV2
+
   init {
     val editorReflect = Reflect.on(layoutInspectorEditor)
-    //LayoutInspectorEditorPanel editorPanel = editorReflect.get("myPanel");
+    // LayoutInspectorEditorPanel editorPanel = editorReflect.get("myPanel");
     val context = editorReflect.get<LayoutInspectorContext>("myContext")
 
     propertyTable = context.propertiesTable
@@ -93,7 +97,11 @@ class LayoutInspectorHook(
         FlyingProperty.customOf(itemName, method)
       }
     } else {
-      SupportProperties[propertyName]
+      if (useV2) {
+        SupportPropertiesV2[propertyName]
+      } else {
+        SupportProperties[propertyName]
+      }
     }
   }
 
@@ -210,16 +218,25 @@ class LayoutInspectorHook(
         Reflect.on(paddingProperty).get<String>("myValue")
       }
 
-      when (Reflect.on(paddingProperty).get<String>("name")) {
-        "mPaddingLeft" -> paddingLeft = padding
-        "mPaddingTop" -> paddingTop = padding
-        "mPaddingRight" -> paddingRight = padding
-        "mPaddingBottom" -> paddingBottom = padding
+      if (useV2) {
+        when (Reflect.on(paddingProperty).get<String>("name")) {
+          "paddingLeft" -> paddingLeft = padding
+          "paddingTop" -> paddingTop = padding
+          "paddingRight" -> paddingRight = padding
+          "paddingBottom" -> paddingBottom = padding
+        }
+      } else {
+        when (Reflect.on(paddingProperty).get<String>("name")) {
+          "mPaddingLeft" -> paddingLeft = padding
+          "mPaddingTop" -> paddingTop = padding
+          "mPaddingRight" -> paddingRight = padding
+          "mPaddingBottom" -> paddingBottom = padding
+        }
       }
     }
 
-    when (flyingProperty.name) {
-      "PaddingLeft" -> HandleViewDebug
+    when (flyingProperty.name.toLowerCase()) {
+      "paddingleft" -> HandleViewDebug
           .invokeMethod(
               client,
               windowTitle,
@@ -229,7 +246,7 @@ class LayoutInspectorHook(
               flyingProperty.type.parse(paddingTop),
               flyingProperty.type.parse(paddingRight),
               flyingProperty.type.parse(paddingBottom))
-      "PaddingTop" -> HandleViewDebug
+      "paddingtop" -> HandleViewDebug
           .invokeMethod(
               client,
               windowTitle,
@@ -239,7 +256,7 @@ class LayoutInspectorHook(
               flyingProperty.type.parse(changedValue),
               flyingProperty.type.parse(paddingRight),
               flyingProperty.type.parse(paddingBottom))
-      "PaddingRight" -> HandleViewDebug
+      "paddingright" -> HandleViewDebug
           .invokeMethod(
               client,
               windowTitle,
@@ -249,7 +266,7 @@ class LayoutInspectorHook(
               flyingProperty.type.parse(paddingTop),
               flyingProperty.type.parse(changedValue),
               flyingProperty.type.parse(paddingBottom))
-      "PaddingBottom" -> HandleViewDebug
+      "paddingbottom" -> HandleViewDebug
           .invokeMethod(
               client,
               windowTitle,
@@ -263,11 +280,15 @@ class LayoutInspectorHook(
   }
 
   private fun getPropertyKey(item: PTableItem): String {
-    return if (item.parent != null &&
-        item.parent!!.name != "methods" &&
-        item.parent!!.name != "properties") {
-      item.parent!!.name + ":" + item.name
-    } else item.name
+    if (useV2) {
+      return item.name
+    } else {
+      return if (item.parent != null &&
+          item.parent!!.name != "methods" &&
+          item.parent!!.name != "properties") {
+        item.parent!!.name + ":" + item.name
+      } else item.name
+    }
   }
 
   private fun getPropertyName(item: PTableItem): String {

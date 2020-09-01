@@ -27,7 +27,10 @@
   <actions>
     <!-- Add your actions here -->
     <action
-      class="com.xiaopo.flying.layoutmaster.action.HookLayoutInspectorAction"
+        class="com.xiaopo.flying.layoutmaster.action.HookLayoutInspectorActionV1"
+        id="Flying.LayoutMaster.Slow"/>
+    <action
+      class="com.xiaopo.flying.layoutmaster.action.HookLayoutInspectorActionV2"
       id="Flying.LayoutMaster"/>
   </actions>
 </idea-plugin>

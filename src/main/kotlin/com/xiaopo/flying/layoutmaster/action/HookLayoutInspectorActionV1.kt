@@ -5,6 +5,7 @@ import com.intellij.openapi.actionSystem.AnAction
 import com.intellij.openapi.actionSystem.AnActionEvent
 import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.ui.DialogWrapper
+import com.xiaopo.flying.layoutmaster.GlobalConfig
 import com.xiaopo.flying.layoutmaster.refer.FlyingGetClientWindowsTask
 import org.jetbrains.android.actions.AndroidProcessChooserDialog
 import org.jetbrains.android.util.AndroidBundle
@@ -12,7 +13,7 @@ import org.jetbrains.android.util.AndroidBundle
 /**
  * @author wupanjie on 2018/4/4.
  */
-class HookLayoutInspectorAction : AnAction("Layout Master", "Run Layout Inspector with Layout Master", null) {
+class HookLayoutInspectorActionV1 : AnAction("Layout Master (V1, Slow)", "Run Layout Inspector with Layout Master", null) {
 
   override fun update(e: AnActionEvent) {
     super.update(e)
@@ -37,6 +38,7 @@ class HookLayoutInspectorAction : AnAction("Layout Master", "Run Layout Inspecto
     if (dialog.exitCode == DialogWrapper.OK_EXIT_CODE) {
       val client = dialog.client
       if (client != null) {
+        GlobalConfig.useV2 = false
         FlyingGetClientWindowsTask(project, client).queue()
       } else {
         Logger.getInstance(AndroidRunLayoutInspectorAction::class.java)

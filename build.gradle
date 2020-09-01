@@ -14,7 +14,7 @@ plugins {
 }
 
 group 'com.xiaopo.flying'
-version '1.0.6'
+version '1.0.7'
 
 apply plugin: 'java'
 apply plugin: 'kotlin'
@@ -45,6 +45,8 @@ intellij {
 }
 patchPluginXml {
   changeNotes """
+     <b>v1.0.7</b><br>
+     use v2 version, speed dump view
      <b>v1.0.6</b><br>
      be compatible with Android Studio 4.0<br>
      <b>v1.0.5</b><br>
