@@ -40,6 +40,8 @@ object SupportProperties {
     ourSupportProperties["getX()"] = of("X", "setX", Float)
     ourSupportProperties["getY()"] = of("Y", "setY", Float)
     ourSupportProperties["getZ()"] = of("Z", "setZ", Float)
+    ourSupportProperties["getClipChildren()"] = of("ClipChildren", "setClipChildren", Boolean)
+    ourSupportProperties["getClipToPadding()"] = of("ClipToPadding", "setClipToPadding", Boolean)
 
     //layout
     ourSupportProperties["getWidth()"] = of("Width", "setWidth", Integer)

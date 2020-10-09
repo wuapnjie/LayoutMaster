@@ -14,7 +14,7 @@ plugins {
 }
 
 group 'com.xiaopo.flying'
-version '1.0.7'
+version '1.0.8'
 
 apply plugin: 'java'
 apply plugin: 'kotlin'
@@ -45,8 +45,10 @@ intellij {
 }
 patchPluginXml {
   changeNotes """
+     <b>v1.0.8</b><br>
+     v1 support clipChildren and clipToPadding<br>
      <b>v1.0.7</b><br>
-     use v2 version, speed dump view
+     use v2 version, speed dump view<br>
      <b>v1.0.6</b><br>
      be compatible with Android Studio 4.0<br>
      <b>v1.0.5</b><br>
