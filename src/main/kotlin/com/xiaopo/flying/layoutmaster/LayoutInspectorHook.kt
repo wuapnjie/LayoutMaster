@@ -1,7 +1,8 @@
 package com.xiaopo.flying.layoutmaster
 
 import com.android.ddmlib.Client
-import com.android.ddmlib.HandleViewDebug
+import com.android.ddmlib.internal.ClientImpl
+import com.android.ddmlib.internal.jdwp.chunkhandler.HandleViewDebug
 import com.android.layoutinspector.model.ClientWindow
 import com.android.layoutinspector.model.ViewNode
 import com.android.layoutinspector.model.ViewProperty
@@ -11,7 +12,6 @@ import com.android.tools.idea.editors.layoutInspector.ptable.LITableItem
 import com.android.tools.idea.editors.layoutInspector.ui.ViewNodeActiveDisplay
 import com.android.tools.property.ptable.PTable
 import com.android.tools.property.ptable.PTableItem
-import com.intellij.openapi.diagnostic.Logger
 import com.intellij.openapi.project.Project
 import com.intellij.openapi.util.text.StringUtil
 import com.xiaopo.flying.layoutmaster.property.FlyingProperty
@@ -31,9 +31,11 @@ import java.io.IOException
 class LayoutInspectorHook(
     project: Project,
     layoutInspectorEditor: LayoutInspectorEditor,
-    private val client: Client,
+    client: Client,
     window: ClientWindow
 ) {
+
+  private val client = client as ClientImpl
 
   private var flyingPopup: FlyingPopup
   private var previewDisplay: ViewNodeActiveDisplay
@@ -41,6 +43,7 @@ class LayoutInspectorHook(
   private val windowTitle: String
 
   private val useV2 = GlobalConfig.useV2
+
 
   init {
     val editorReflect = Reflect.on(layoutInspectorEditor)

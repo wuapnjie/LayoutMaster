@@ -39,6 +39,7 @@ public class FlyingLayoutInspectorCaptureTask extends Task.Backgroundable {
 
   @NotNull private final Client myClient;
   @NotNull private final ClientWindow myWindow;
+  private final Project project;
 
   private String myError;
   private byte[] myData;
@@ -48,6 +49,7 @@ public class FlyingLayoutInspectorCaptureTask extends Task.Backgroundable {
     super(project, "Capturing View Hierarchy");
     myClient = client;
     myWindow = window;
+    this.project = project;
   }
 
   @Override public void run(@NotNull ProgressIndicator indicator) {
@@ -87,22 +89,22 @@ public class FlyingLayoutInspectorCaptureTask extends Task.Backgroundable {
       return;
     }
 
-    CaptureService service = CaptureService.getInstance(myProject);
+    CaptureService service = CaptureService.getInstance(project);
     try {
       Capture capture = service.createCapture(LayoutInspectorCaptureType.class, myData,
           service.getSuggestedName(myClient));
       final VirtualFile file = capture.getFile();
       file.refresh(true, false, () -> UIUtil.invokeLaterIfNeeded(() -> {
-        OpenFileDescriptor descriptor = new OpenFileDescriptor(myProject, file);
+        OpenFileDescriptor descriptor = new OpenFileDescriptor(project, file);
         List<FileEditor> editors =
-            FileEditorManager.getInstance(myProject).openEditor(descriptor, true);
+            FileEditorManager.getInstance(project).openEditor(descriptor, true);
         editors
             .stream()
             .filter(e -> e instanceof LayoutInspectorEditor)
             .findFirst()
             .ifPresent(fileEditor -> {
               new LayoutInspectorHook(
-                  myProject,
+                  project,
                   (LayoutInspectorEditor) fileEditor,
                   myClient,
                   myWindow
