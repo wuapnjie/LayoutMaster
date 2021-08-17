@@ -14,7 +14,7 @@ plugins {
 }
 
 group 'com.xiaopo.flying'
-version '1.0.9'
+version '1.1.0'
 
 apply plugin: 'java'
 apply plugin: 'kotlin'
@@ -45,6 +45,10 @@ intellij {
 }
 patchPluginXml {
   changeNotes """
+     <b>v1.1.0</b><br>
+     be compatible with Android Studio Arctic Fox<br>
+     <b>v1.0.10</b><br>
+     be compatible with Android Studio 4.2<br>
      <b>v1.0.9</b><br>
      be compatible with Android Studio 4.1<br>
      <b>v1.0.8</b><br>
